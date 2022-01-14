@@ -23,6 +23,6 @@ class NewsLetterController extends Controller
             ]);
         }
 
-        return redirect('/');
+        return redirect('/')->with('success', 'You have been subscribed for updates!');
     }
 }

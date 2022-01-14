@@ -95,5 +95,11 @@
                 </div>
             </footer>
         </section>
+
+        @if (session()->has('success'))
+            <x-popup :message="session()->get('success')" class="bg-blue-500 text-white" />
+        @elseif (session()->has('info'))
+            <x-popup :message="session()->get('info')" class="bg-white text-black border-2 border-blue-500" />
+        @endif
     </body>
 </html>

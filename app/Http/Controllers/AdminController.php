@@ -37,7 +37,7 @@ class AdminController extends Controller
             'thumbnail' => request()->file('thumbnail')->store('thumbnails')
         ]));
 
-        return redirect('/admin/dashboard');
+        return redirect('/admin/dashboard')->with('info', 'Your post has been created.');
     }
 
     /*
@@ -61,7 +61,7 @@ class AdminController extends Controller
 
         $post->update($attributes);
 
-        return redirect('/admin/dashboard');
+        return redirect('/admin/dashboard')->with('info', 'Your post has been updated.');;
     }
 
     /*
@@ -70,6 +70,8 @@ class AdminController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+
+        session()->flash('info', 'Your post has been removed.');
 
         return back();
     }
