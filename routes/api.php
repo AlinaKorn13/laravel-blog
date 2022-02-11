@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\V1\CommentController;
+use App\Http\Controllers\Api\V1\PostLikeController;
+use App\Http\Controllers\Api\V1\PostViewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('v1')->namespace('Api\V1')->group(function () {
+    Route::get('comments', [CommentController::class, 'index']);
+    Route::patch('like',  [PostLikeController::class, 'update']);
+    Route::patch('view',  [PostViewController::class, 'update']);
 });
