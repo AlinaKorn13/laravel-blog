@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsLetterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UnsubscribeController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+
+    return ['token' => $token->plainTextToken];
+});
+
 Route::get('/',  [PostController::class, 'index'])->name('home');
 Route::get('/posts/{post:slug}',  [PostController::class, 'show']);
 Route::post('/comments/{post:slug}/create',  [CommentController::class, 'store']);
@@ -26,6 +33,7 @@ Route::post('/newsletter',  NewsLetterController::class);
 Route::get('/unsubscribe',  UnsubscribeController::class);
 
 Route::get('/admin/dashboard',  [AdminController::class, 'index'])->middleware('auth');
+Route::get('/admin/statistics',  [AdminController::class, 'stats'])->middleware('auth');
 Route::get('/admin/posts/new',  [AdminController::class, 'create'])->middleware('auth');
 Route::post('/admin/posts/new',  [AdminController::class, 'store'])->middleware('auth');
 Route::get('/admin/posts/{post:id}/edit',  [AdminController::class, 'edit'])->middleware('auth');

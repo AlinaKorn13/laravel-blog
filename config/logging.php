@@ -48,6 +48,12 @@ return [
     */
 
     'channels' => [
+        'custom-logger' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/custom.log'),
+            'level' => 'info'
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

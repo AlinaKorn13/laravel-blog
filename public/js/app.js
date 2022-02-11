@@ -5448,6 +5448,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./custom */ "./resources/js/custom.js");
+
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
@@ -5482,6 +5484,72 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/custom.js":
+/*!********************************!*\
+  !*** ./resources/js/custom.js ***!
+  \********************************/
+/***/ (() => {
+
+$(document).ready(function () {
+  $('#save_comment').on('click', function (e) {
+    e.preventDefault();
+    var body = $('textarea[name="body"]').val();
+    $.ajax({
+      url: $(this).closest('form').attr('action'),
+      type: "POST",
+      data: {
+        body: body
+      },
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function success(data) {
+        $('textarea[name="body"]').val('');
+        $("#comments_container").prepend(data);
+      },
+      error: function error(msg) {
+        console.log('Error');
+      }
+    });
+  }); // setTimeout(function(){
+  //     $.ajax({
+  //         url: "/api/v1/view?id=" + $('article').data('post_id'),
+  //         type: "PATCH",
+  //         headers: {
+  //             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  //         },
+  //
+  //         success: function (data) {
+  //             $('.views span').text(data)
+  //         },
+  //         error: function (msg) {
+  //             console.log('Error');
+  //         }
+  //     });
+  // }, 5000);
+
+  $('#like_btn').on('click', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: "/api/v1/like?id=" + $('article').data('post_id'),
+      type: "POST",
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+        'Authorization': "Bearer " + $('input[name="access_token"]').val()
+      },
+      success: function success(data) {
+        $('#like_btn').toggleClass('bg-gray-800');
+        $('#like_btn span').text(data);
+      },
+      error: function error(msg) {
+        console.log(msg);
+      }
+    });
+  });
+});
 
 /***/ }),
 
@@ -23073,7 +23141,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
