@@ -21,8 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('v1')->namespace('Api\V1')->group(function () {
-    Route::get('comments', [CommentController::class, 'index']);
-    Route::patch('like',  [PostLikeController::class, 'update']);
-    Route::patch('view',  [PostViewController::class, 'update']);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::prefix('v1')->namespace('Api\V1')->group(function () {
+        Route::get('comments', [CommentController::class, 'index']);
+        Route::post('like',  [PostLikeController::class, 'store']);
+        Route::patch('view',  [PostViewController::class, 'update']);
+    });
 });

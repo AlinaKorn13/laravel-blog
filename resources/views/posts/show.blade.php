@@ -3,6 +3,7 @@
         <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
             <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="" class="rounded-xl">
 
+
             <p class="mt-4 block text-gray-400 text-xs">
                 Published <time>{{ $post->created_at->diffForHumans() }}</time>
             </p>
@@ -11,9 +12,17 @@
                 <span>{{ $post->views }}</span> views
             </p>
 
-            <p class="mt-4 block">
-                <button id="like_btn" class="p-1.5 text-gray-400 text-xs border bottom-1.5 rounded hover:bg-gray-500 hover:text-white">Like (<span>{{ $post->likes }}</span>)</button>
-            </p>
+            @auth
+                @php $class = ""; @endphp
+                @if ($post->isLikedByUser)
+                    @php $class = "bg-gray-800";
+                    @endphp
+                @endif
+                <p class="mt-4 block">
+                    <input type="hidden" name="access_token" value="{{ Cookie::get('Authorization') }}">
+                    <button id="like_btn" class="p-1.5 text-gray-400 text-xs border bottom-1.5 rounded hover:bg-gray-500 hover:text-white {{ $class }}">Like (<span>{{ $post->likes()->count() }}</span>)</button>
+                </p>
+            @endauth
 
             <x-author-avatar :post="$post" />
         </div>
@@ -43,7 +52,11 @@
             </h1>
 
             <div class="space-y-4 lg:text-lg leading-loose">
-                <p>{{ $post->body }}</p>
+                <p>{!! $post->body !!}</p>
+            </div>
+
+            <div class="space-y-4 lg:text-lg leading-loose">
+                {!! $post->video_src !!}
             </div>
 
             <x-comment-form :post="$post" />

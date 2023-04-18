@@ -22,37 +22,41 @@ $(document).ready(function () {
         });
     });
 
-    setTimeout(function(){
-        $.ajax({
-            url: "/api/v1/view?id=" + $('article').data('post_id'),
-            type: "PATCH",
-            headers: {
-                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-            },
+    // setTimeout(function(){
+    //     $.ajax({
+    //         url: "/api/v1/view?id=" + $('article').data('post_id'),
+    //         type: "PATCH",
+    //         headers: {
+    //             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //
+    //         success: function (data) {
+    //             $('.views span').text(data)
+    //         },
+    //         error: function (msg) {
+    //             console.log('Error');
+    //         }
+    //     });
+    // }, 5000);
 
-            success: function (data) {
-                $('.views span').text(data)
-            },
-            error: function (msg) {
-                console.log('Error');
-            }
-        });
-    }, 5000);
 
     $('#like_btn').on('click', function(e) {
         e.preventDefault();
         $.ajax({
             url: "/api/v1/like?id=" + $('article').data('post_id'),
-            type: "PATCH",
+
+            type: "POST",
             headers: {
-                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization': `Bearer ` + $('input[name="access_token"]').val(),
             },
 
             success: function (data) {
+                $('#like_btn').toggleClass('bg-gray-800')
                 $('#like_btn span').text(data)
             },
             error: function (msg) {
-                console.log('Error');
+                console.log(msg);
             }
         });
     });

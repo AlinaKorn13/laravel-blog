@@ -8,6 +8,9 @@
                 <div class="font-semibold text-left">Title</div>
             </th>
             <th class="p-2 whitespace-nowrap">
+                <div class="font-semibold text-left">Comments</div>
+            </th>
+            <th class="p-2 whitespace-nowrap">
                 <div class="font-semibold text-left">Date</div>
             </th>
             <th colspan="2" class="p-2 whitespace-nowrap">
@@ -26,6 +29,9 @@
                 </td>
                 <td class="p-2 whitespace-nowrap">
                     <div class="text-left"><a href="/posts/{{ $post->slug }}">{{ $post->title }}</a></div>
+                </td>
+                <td class="p-2 whitespace-nowrap">
+                    <div class="text-left">{{ count($post->comments) }}</div>
                 </td>
                 <td class="p-2 whitespace-nowrap">
                     <div class="text-left font-medium">{{ $post->created_at }}</div>

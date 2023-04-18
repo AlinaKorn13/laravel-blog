@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -25,7 +27,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->increment('views', 1);
+        Visitor::addVisitor(request()->ip(), $post->id);
+
+        $post->views = Visitor::all()->count();
+
+        if ($post->isLikedByUser(auth()->id())) {
+            $post->isLikedByUser = true;
+        }
 
         return view('posts.show', ['post' => $post]);
     }

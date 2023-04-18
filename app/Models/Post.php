@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
     use HasFactory;
 
+    public bool $isLikedByUser = false;
+
     protected $guarded = [];
 
-    protected $with = ['category', 'author', 'comments'];
+    protected $with = ['category', 'author', 'comments', 'likes'];
 
     public function scopeFilter($query, array $filters)
     {
@@ -39,5 +42,34 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(PostsLike::class);
+    }
+
+    public static function getLikes(int $id)
+    {
+        return self::find($id)->first()->likes()->get()->count();
+    }
+
+    public function isLikedByUser($user_id)
+    {
+        return $this->likes()->where('user_id', $user_id)->get()->toArray();
+    }
+
+    public static function months()
+    {
+        return self::select(
+            DB::raw('count(id) as `posts`'),
+            DB::raw("DATE_FORMAT(created_at,'%M %Y') as months"),
+            DB::raw('max(created_at) as createdAt')
+        )
+            ->where("user_id", auth()->id())
+            ->where("created_at", ">", \Carbon\Carbon::now()->subMonths(6))
+            ->orderBy('createdAt', 'desc')
+            ->groupBy('months')
+            ->get();
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\MailchimpNewsletter;
+use App\Services\HubspotNewsletter;
 use App\Services\Newsletter;
+use HubSpot\Factory;
 use Illuminate\Support\ServiceProvider;
-use MailchimpMarketing\ApiClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,13 +16,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        app()->bind(Newsletter::class, function () {
-            $client = (new ApiClient)->setConfig([
-                'apiKey' => config('services.mailchimp.key'),
-                'server' => config('services.mailchimp.server')
-            ]);
 
-            return new MailchimpNewsletter($client);
+        app()->bind(Newsletter::class, function () {
+            $client = Factory::createWithAccessToken(config('hubspot.api_key'));
+
+            return new HubspotNewsletter($client);
         });
     }
 
