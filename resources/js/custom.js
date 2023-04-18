@@ -39,10 +39,12 @@ $(document).ready(function () {
     //     });
     // }, 5000);
 
+
     $('#like_btn').on('click', function(e) {
         e.preventDefault();
         $.ajax({
             url: "/api/v1/like?id=" + $('article').data('post_id'),
+
             type: "POST",
             headers: {
                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),

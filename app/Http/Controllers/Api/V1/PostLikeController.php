@@ -12,11 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class PostLikeController extends Controller
 {
     /*
      * Set view to post and update views count
      */
+
     public function store(Request $request)
     {
         try {
@@ -38,5 +38,5 @@ class PostLikeController extends Controller
         $likes = Post::getLikes($request->id);
 
         return $likes;
-    }
+
 }
