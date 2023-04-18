@@ -5514,6 +5514,7 @@ $(document).ready(function () {
         console.log('Error');
       }
     });
+
   }); // setTimeout(function(){
   //     $.ajax({
   //         url: "/api/v1/view?id=" + $('article').data('post_id'),
@@ -5535,6 +5536,7 @@ $(document).ready(function () {
     e.preventDefault();
     $.ajax({
       url: "/api/v1/like?id=" + $('article').data('post_id'),
+
       type: "POST",
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),

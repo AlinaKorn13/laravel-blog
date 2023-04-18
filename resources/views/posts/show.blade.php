@@ -3,6 +3,7 @@
         <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
             <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="" class="rounded-xl">
 
+
             <p class="mt-4 block text-gray-400 text-xs">
                 Published <time>{{ $post->created_at->diffForHumans() }}</time>
             </p>
