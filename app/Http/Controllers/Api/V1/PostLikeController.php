@@ -3,22 +3,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PostLikeResource;
 use App\Models\Post;
-use App\Models\PostsLike;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
+class PostLikeController extends \App\Http\Controllers\Controller
 {
-    /*
-     * Set view to post and update views count
-     */
-
     public function store(Request $request)
     {
+        if (auth()->guest()) return abort(401);
+
         try {
             $data = [
                 'post_id' => $request->id,
@@ -35,8 +28,7 @@ use Illuminate\Support\Facades\Log;
 
         }
 
-        $likes = Post::getLikes($request->id);
-
-        return $likes;
+        return Post::getLikes($request->id);
+    }
 
 }

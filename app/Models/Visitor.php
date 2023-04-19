@@ -22,7 +22,11 @@ class Visitor extends Model
 
     public static function addVisitor($ip, $post_id)
     {
-        return self::firstOrCreate(['post_id' => $post_id, 'ip_address' => $ip]);
+        try {
+            return self::firstOrCreate(['post_id' => $post_id, 'ip_address' => $ip]);
+        } catch(\Exception $e) {
+
+        }
     }
 
     public static function views()

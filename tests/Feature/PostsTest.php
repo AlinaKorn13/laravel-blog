@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Visitor;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -61,6 +62,56 @@ class PostsTest extends TestCase
                 'body' => 'Some text',
                 'user_id' => $user->id
             ]);
-        $response->assertStatus(302);
+        $response->assertStatus(200);
+    }
+
+    public function test_authorized_user_can_like_post()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+
+        $post = Post::factory()->create();
+
+        $response = $this->actingAs($user)->post('/api/v1/like',
+            [
+                'id' => $post->id,
+            ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_unauthorized_user_can_like_post()
+    {
+        $post = Post::factory()->create();
+
+        $response = $this->postJson('/api/v1/like',
+            [
+                'id' => $post->id,
+            ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function test_authorized_user_can_incline_post_view_counter()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+
+        $post = Post::factory()->create();
+
+        $response = Visitor::addVisitor(request()->ip(), $post->id);
+
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('posts_likes', function (Blueprint $table) {
             $table->id();
             $table->integer('post_id')->constrained('posts')->onDelete('cascade');;
-            $table->integer('user_id')->unique()->constrained('users')->onDelete('cascade');;
+            $table->integer('user_id')->constrained('users')->onDelete('cascade');;
             $table->timestamps();
         });
     }
