@@ -25,6 +25,5 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->namespace('Api\V1')->group(function () {
         Route::get('comments', [CommentController::class, 'index']);
         Route::post('like',  [PostLikeController::class, 'store']);
-        Route::patch('view',  [PostViewController::class, 'update']);
     });
 });

@@ -5514,7 +5514,6 @@ $(document).ready(function () {
         console.log('Error');
       }
     });
-
   }); // setTimeout(function(){
   //     $.ajax({
   //         url: "/api/v1/view?id=" + $('article').data('post_id'),
@@ -5535,8 +5534,10 @@ $(document).ready(function () {
   $('#like_btn').on('click', function (e) {
     e.preventDefault();
     $.ajax({
-      url: "/api/v1/like?id=" + $('article').data('post_id'),
-
+      url: "/api/v1/like",
+      data: {
+        id: $('article').data('post_id')
+      },
       type: "POST",
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
